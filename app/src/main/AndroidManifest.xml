@@ -30,6 +30,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ProizvodiActivity" >
+            </activity>
+        <activity android:name=".Meduaktivnost" >
         </activity>
     </application>
 
