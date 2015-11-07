@@ -10,7 +10,7 @@
         android:layout_margin="10dp"
         android:clickable="false"
         android:enabled="true"
-        android:focusable="false"/>
+        android:focusable="false" />
 
     <TextView
         android:layout_width="wrap_content"

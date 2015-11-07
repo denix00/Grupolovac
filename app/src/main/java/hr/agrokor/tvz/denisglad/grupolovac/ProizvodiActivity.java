@@ -30,18 +30,28 @@ public class ProizvodiActivity extends AppCompatActivity {
 
     private static String[][] staticListaProizvoda;
 
-    public static String nagradniKod;
-
-    private static int brojacCheckiranog;
+    public String nagradniKod;
 
     private static TextView txtNagradniKod;
+
+    private static String idTrgovine;
+
+    private String check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proizvodi);
 
+        Intent intent = getIntent();
+        Log.i("check", "Proizvodi, zaprimio kod (prije ifa): "+ intent.getExtras().getString("idTrgovine"));
+        if(intent.getStringExtra("idTrgovine") != null){
+            idTrgovine = intent.getStringExtra("idTrgovine");
+            check = intent.getStringExtra("check");
+            nagradniKod = intent.getStringExtra("nagradniKod");
 
+            Log.i("check", "Proizvodi, zaprimio kod: " + idTrgovine);
+        }
 
         //Dohvacanje podataka s parse.com, spremanje u listu trgovina
         //Dohvati sve iz tablice Trgovine
@@ -52,6 +62,15 @@ public class ProizvodiActivity extends AppCompatActivity {
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
                     //ako nije doslo do pogreske izvrsi ovo
+
+                    if(nagradniKod != null){
+                        txtNagradniKod = (TextView) findViewById(R.id.txtNagradniKod);
+                        txtNagradniKod.setVisibility(View.VISIBLE);
+                        txtNagradniKod.setText("Nagradni kod: " + nagradniKod);
+
+                        Button skeniraj = (Button) findViewById(R.id.btnSkeniraj);
+                        skeniraj.setVisibility(View.INVISIBLE);
+                    }
 
                     final String[][] listaProizvoda = new String[list.size()][4];
 
@@ -72,7 +91,18 @@ public class ProizvodiActivity extends AppCompatActivity {
                     //spremanje za kasnije koristenje kod skeniranja
                     if (staticListaProizvoda == null) {
                         staticListaProizvoda = listaProizvoda;
-                        brojacCheckiranog = 0;
+                    }
+
+                    if(check.equals("false")){
+                        for(int i=0; i < staticListaProizvoda.length; i++){
+                            staticListaProizvoda[i][3] = "false";
+                        }
+                        check = "ne_trebam_vise";
+                    }else if (check.equals("true")){
+                        for(int i=0; i < staticListaProizvoda.length; i++){
+                            staticListaProizvoda[i][3] = "true";
+                        }
+                        check = "ne_trebam_vise";
                     }
 
                     ListAdapter proizvodiAdapter = new CustomAdapterProizvod(getApplicationContext(), staticListaProizvoda);
@@ -98,15 +128,6 @@ public class ProizvodiActivity extends AppCompatActivity {
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.initiateScan();
 
-
-        Log.i("scan", "button metoda");
-        Log.i("scan", staticListaProizvoda[0][1]);
-        Log.i("scan", staticListaProizvoda[1][1]);
-        Log.i("scan", staticListaProizvoda[2][1]);
-        Log.i("scan", staticListaProizvoda[3][1]);
-        Log.i("scan", staticListaProizvoda[4][1]);
-        Log.i("scan", "button metoda");
-
     }
 
 
@@ -121,16 +142,6 @@ public class ProizvodiActivity extends AppCompatActivity {
 
             Log.i("scan", "Barcode " + barcode);
 
-
-            Log.i("scan", "nakon dohvata");
-            Log.i("scan", staticListaProizvoda[0][1]);
-            Log.i("scan", staticListaProizvoda[1][1]);
-            Log.i("scan", staticListaProizvoda[2][1]);
-            Log.i("scan", staticListaProizvoda[3][1]);
-            Log.i("scan", staticListaProizvoda[4][1]);
-            Log.i("scan", "nakon dohvata");
-
-
             boolean zastavica = false;
             for(int i = 0; i < staticListaProizvoda.length; i++){
                 Log.i("scan", "Provjeravam: " + barcode + " == " + staticListaProizvoda[i][1]);
@@ -138,7 +149,6 @@ public class ProizvodiActivity extends AppCompatActivity {
                 if(barcode.equals(staticListaProizvoda[i][1])){
                     staticListaProizvoda[i][3] = "true";
                     Log.i("scan", "Postavljam true za proizvod");
-                    brojacCheckiranog ++;
                     zastavica = true;
                     break;
                 }
@@ -148,11 +158,26 @@ public class ProizvodiActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Proizvod nije na listi", Toast.LENGTH_LONG).show();
             }
 
-            // dok su svi skupljeni, daj kod i prikazi i njega, inace prikazi bez koda podatke
+            // koliko ih je odskenirano
+            int brojacCheckiranog = 0;
+            for(int i=0; i<staticListaProizvoda.length; i++){
+                if(staticListaProizvoda[i][3].equals("true"))
+                    brojacCheckiranog ++;
+            }
+
+            // ako su svi odskenirani, daj kod
             if(brojacCheckiranog == staticListaProizvoda.length){
-                nagradniKod = randomKod(10);
-                Log.i("scan", "Nagradni kod: " + nagradniKod);
-                //finish();
+                if(nagradniKod == null) {
+                    nagradniKod = randomKod(10);
+                    Log.i("scan", "Nagradni kod: " + nagradniKod);
+
+                    Intent trgovine = new Intent(ProizvodiActivity.this, TrgovineActivity.class);
+                    trgovine.putExtra("idTrgovine", idTrgovine);
+                    trgovine.putExtra("nagradniKod", nagradniKod);
+                    Log.i("check", "Proizvodi, startam trgovine, idTrgovine: " + idTrgovine);
+                    startActivity(trgovine);
+
+                }
             }
 
             prikaziPodatke();

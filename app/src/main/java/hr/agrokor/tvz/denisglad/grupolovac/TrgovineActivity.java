@@ -29,10 +29,26 @@ import java.util.List;
 
 public class TrgovineActivity extends AppCompatActivity {
 
+    private static String[][] listaTrgovinaStatic;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trgovine);
+
+        Intent intent = getIntent();
+        if(intent.getStringExtra("idTrgovine") != null && listaTrgovinaStatic != null){
+            Log.i("check", "Trgovine, zaprimio kod");
+            for(int i=0; i < listaTrgovinaStatic.length; i++){
+                if(listaTrgovinaStatic[i][3].equals(intent.getStringExtra("idTrgovine"))){
+                    listaTrgovinaStatic[i][4] = "true";
+                    listaTrgovinaStatic[i][5] = intent.getStringExtra("nagradniKod");
+
+                    Log.i("check", "Trgovine, postavio true za trgovinu");
+                }
+            }
+        }
 
 
         //Dohvacanje podataka s parse.com, spremanje u listu trgovina
@@ -40,47 +56,38 @@ public class TrgovineActivity extends AppCompatActivity {
 
         ParseQuery<ParseObject> queryTrgovine = ParseQuery.getQuery("Trgovine");
 
-        ParseQuery<ParseObject> queryUsers = ParseQuery.getQuery("_User");
-        queryUsers.whereEqualTo("objectId", ParseUser.getCurrentUser().getObjectId());
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserTrgovina");
-        query.whereMatchesQuery("idTrgovine", queryTrgovine);
-        query.whereMatchesQuery("idUser", queryUsers);
-
-        ParseQuery<ParseObject> trgovine = ParseQuery.getQuery("Trgovine");
-        trgovine.whereMatchesQuery("idTrgovine", query);
-
-        Log.i("upit", "Id korisnika: " + ParseUser.getCurrentUser().getObjectId());
-        Log.i("upit", "Username: " + ParseUser.getCurrentUser().getUsername());
-
-        trgovine.findInBackground(new FindCallback<ParseObject>() {
+        queryTrgovine.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
                     //ako nije doslo do pogreske izvrsi ovo
 
-                    Log.i("upit", "Upit je prošao, veličina:" + list.size());
-
-                    for(ParseObject list2 : list){
-                        Log.i("upit", "U foru: " + list2.getObjectId());
-                    }
-
-                    /*
-                    final String[][] listaTrgovina = new String[list.size()][4];
+                    final String[][] listaTrgovina = new String[list.size()][6];
 
                     //prodi kroz sve dohvacene entitete
                     for (int i = 0; i < list.size(); i++) {
                         String grad = list.get(i).getString("grad");
                         String ulica = list.get(i).getString("ulica");
                         String rok = list.get(i).getDate("rok").toString();
-                        String id = list.get(i).getString("objectId");
+                        String id = list.get(i).getString("idTrgovine");
 
                         listaTrgovina[i][0] = grad;
                         listaTrgovina[i][1] = ulica;
                         listaTrgovina[i][2] = rok;
                         listaTrgovina[i][3] = id;
+                        listaTrgovina[i][4] = "false";
                     }
 
-                    ListAdapter trgovineAdapter = new CustomAdapterTrgovina(getApplicationContext(), listaTrgovina);
+                    //spremanje za kasnije koristenje kod skeniranja
+                    if (listaTrgovinaStatic == null) {
+                        Log.i("check", "Postavljam trgovine u static");
+                        listaTrgovinaStatic = listaTrgovina;
+                    }
+
+                    Log.i("check", "Iscrtavam");
+                    for(int i=0; i < listaTrgovinaStatic.length; i++){
+                        Log.i("check", "Trgovina["+i+"]:" + listaTrgovinaStatic[i][4]);
+                    }
+                    ListAdapter trgovineAdapter = new CustomAdapterTrgovina(getApplicationContext(), listaTrgovinaStatic);
 
                     ListView trgovineListView = (ListView) findViewById(R.id.listTrgovine);
                     trgovineListView.setAdapter(trgovineAdapter);
@@ -91,12 +98,12 @@ public class TrgovineActivity extends AppCompatActivity {
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                                     // proslijedivanje ID-a trgovine metodi
-                                    proizvodiActivity(listaTrgovina[position][3]);
-
+                                    Log.i("check", "Trgovine zovem metodu: " + listaTrgovinaStatic[position][3]);
+                                    proizvodiActivity(listaTrgovinaStatic[position][3], listaTrgovinaStatic[position][4], listaTrgovinaStatic[position][5]);
                                 }
                             }
                     );
-*/
+
 
                 }
                 //doslo je do pogreske, umjesto naziva grada sorenu napomenu da je doslo do pogreske pri dohvatu podataka
@@ -110,10 +117,13 @@ public class TrgovineActivity extends AppCompatActivity {
 
     }
 
-    private void proizvodiActivity(String idTrgovine){
+    private void proizvodiActivity(String idTrgovine, String check, String nagradniKod){
 
-        Intent proizvodi = new Intent(getApplicationContext(), ProizvodiActivity.class);
+        Intent proizvodi = new Intent(TrgovineActivity.this, ProizvodiActivity.class);
         proizvodi.putExtra("idTrgovine", idTrgovine);
+        proizvodi.putExtra("check", check);
+        proizvodi.putExtra("nagradniKod", nagradniKod);
+        Log.i("check", "Trgovine, umecem id: " + idTrgovine);
         startActivity(proizvodi);
     }
 

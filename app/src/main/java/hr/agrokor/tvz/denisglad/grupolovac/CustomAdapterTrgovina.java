@@ -34,7 +34,12 @@ class CustomAdapterTrgovina extends ArrayAdapter {
         TextView txtUlica = (TextView) customView.findViewById(R.id.txtUlica);
         TextView txtRok = (TextView) customView.findViewById(R.id.txtRok);
 
-        checkBox.setChecked(true);
+        Log.i("check", "CustomAdapter, redak["+position+"]:" + redak[4]);
+        if(redak[4].equals("true")){
+            checkBox.setChecked(true);
+        }else{
+            checkBox.setChecked(false);
+        }
         txtGrad.setText(redak[0]);
         txtUlica.setText(redak[1]);
         txtRok.setText(redak[2]);
