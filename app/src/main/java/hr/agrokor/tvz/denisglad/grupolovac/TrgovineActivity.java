@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,14 +37,34 @@ public class TrgovineActivity extends AppCompatActivity {
 
         //Dohvacanje podataka s parse.com, spremanje u listu trgovina
         //Dohvati sve iz tablice Trgovine
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Trgovine");
-        //Dohvati sve entitete koji imaju unesen grad
-        //Dohvati
-        query.findInBackground(new FindCallback<ParseObject>() {
+
+        ParseQuery<ParseObject> queryTrgovine = ParseQuery.getQuery("Trgovine");
+
+        ParseQuery<ParseObject> queryUsers = ParseQuery.getQuery("_User");
+        queryUsers.whereEqualTo("objectId", ParseUser.getCurrentUser().getObjectId());
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserTrgovina");
+        query.whereMatchesQuery("idTrgovine", queryTrgovine);
+        query.whereMatchesQuery("idUser", queryUsers);
+
+        ParseQuery<ParseObject> trgovine = ParseQuery.getQuery("Trgovine");
+        trgovine.whereMatchesQuery("idTrgovine", query);
+
+        Log.i("upit", "Id korisnika: " + ParseUser.getCurrentUser().getObjectId());
+        Log.i("upit", "Username: " + ParseUser.getCurrentUser().getUsername());
+
+        trgovine.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
                     //ako nije doslo do pogreske izvrsi ovo
 
+                    Log.i("upit", "Upit je prošao, veličina:" + list.size());
+
+                    for(ParseObject list2 : list){
+                        Log.i("upit", "U foru: " + list2.getObjectId());
+                    }
+
+                    /*
                     final String[][] listaTrgovina = new String[list.size()][4];
 
                     //prodi kroz sve dohvacene entitete
@@ -57,12 +78,11 @@ public class TrgovineActivity extends AppCompatActivity {
                         listaTrgovina[i][1] = ulica;
                         listaTrgovina[i][2] = rok;
                         listaTrgovina[i][3] = id;
-
                     }
 
                     ListAdapter trgovineAdapter = new CustomAdapterTrgovina(getApplicationContext(), listaTrgovina);
 
-                    ListView trgovineListView = (ListView) findViewById(R.id .listTrgovine);
+                    ListView trgovineListView = (ListView) findViewById(R.id.listTrgovine);
                     trgovineListView.setAdapter(trgovineAdapter);
 
                     trgovineListView.setOnItemClickListener(
@@ -76,7 +96,7 @@ public class TrgovineActivity extends AppCompatActivity {
                                 }
                             }
                     );
-
+*/
 
                 }
                 //doslo je do pogreske, umjesto naziva grada sorenu napomenu da je doslo do pogreske pri dohvatu podataka
