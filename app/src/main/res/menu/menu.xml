@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
-    <item android:id="@+id/action_settings"
-        android:title="Logout"
+    <item android:id="@+id/odjava"
+        android:title="Odjava"
         android:orderInCategory="100"
         app:showAsAction="always" />
 </menu>

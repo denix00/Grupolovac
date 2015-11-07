@@ -2,12 +2,16 @@ package hr.agrokor.tvz.denisglad.grupolovac;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -15,6 +19,7 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -90,5 +95,27 @@ public class TrgovineActivity extends AppCompatActivity {
         Intent proizvodi = new Intent(getApplicationContext(), ProizvodiActivity.class);
         proizvodi.putExtra("idTrgovine", idTrgovine);
         startActivity(proizvodi);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.odjava) {
+            ParseUser.getCurrentUser().logOut();
+            startActivity(new Intent(TrgovineActivity.this, Meduaktivnost.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }
