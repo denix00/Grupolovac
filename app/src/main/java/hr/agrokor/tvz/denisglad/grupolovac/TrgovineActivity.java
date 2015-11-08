@@ -67,7 +67,7 @@ public class TrgovineActivity extends AppCompatActivity {
                     for (int i = 0; i < list.size(); i++) {
                         String grad = list.get(i).getString("grad");
                         String ulica = list.get(i).getString("ulica");
-                        String rok = list.get(i).getDate("rok").toString();
+                        String rok = list.get(i).getDate("rok").toLocaleString();
                         String id = list.get(i).getString("idTrgovine");
 
                         listaTrgovina[i][0] = grad;

@@ -42,7 +42,7 @@ class CustomAdapterTrgovina extends ArrayAdapter {
         }
         txtGrad.setText(redak[0]);
         txtUlica.setText(redak[1]);
-        txtRok.setText(redak[2]);
+        txtRok.setText("Rok: " + redak[2]);
 
         return customView;
     }
