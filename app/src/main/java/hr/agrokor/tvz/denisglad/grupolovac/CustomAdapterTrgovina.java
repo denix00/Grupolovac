@@ -15,7 +15,7 @@ import org.w3c.dom.Text;
 /**
  * Created by Denis on 28.10.2015..
  */
-class CustomAdapterTrgovina extends ArrayAdapter {
+public class CustomAdapterTrgovina extends ArrayAdapter {
 
     CustomAdapterTrgovina(Context context, String[][] trgovine){
         super(context, R.layout.trgovine_row, trgovine);
