@@ -1,8 +1,6 @@
 package hr.agrokor.tvz.denisglad.grupolovac;
 
-import android.app.ActionBar;
 import android.content.Intent;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,19 +10,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class TrgovineActivity extends AppCompatActivity {
@@ -106,15 +99,13 @@ public class TrgovineActivity extends AppCompatActivity {
 
 
                 }
-                //doslo je do pogreske, umjesto naziva grada sorenu napomenu da je doslo do pogreske pri dohvatu podataka
+                //doslo je do pogreske, umjesto naziva grada prikazi napomenu da je doslo do pogreske pri dohvatu podataka
                 else {
                     Toast.makeText(getBaseContext(), "Nisam dohvatio trgovine", Toast.LENGTH_LONG).show();
                     finish();
                 }
             }
         });
-        //Dohvacanje podataka s parse.com - kraj koda
-
     }
 
     private void proizvodiActivity(String idTrgovine, String check, String nagradniKod){

@@ -7,9 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -53,11 +51,10 @@ public class ProizvodiActivity extends AppCompatActivity {
             Log.i("check", "Proizvodi, zaprimio kod: " + idTrgovine);
         }
 
-        //Dohvacanje podataka s parse.com, spremanje u listu trgovina
-        //Dohvati sve iz tablice Trgovine
+        //Dohvacanje podataka s parse.com, spremanje u listu proizvoda
+        //Dohvati sve iz tablice Proizvodi
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Proizvodi");
-        //Dohvati sve entitete koji imaju unesen grad
-        //Dohvati
+
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
@@ -120,14 +117,12 @@ public class ProizvodiActivity extends AppCompatActivity {
                 }
             }
         });
-        //Dohvacanje podataka s parse.com - kraj koda
     }
 
     public void onClickSkeniraj(View v){
 
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.initiateScan();
-
     }
 
 
@@ -135,10 +130,9 @@ public class ProizvodiActivity extends AppCompatActivity {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null) {
             String barcode;
-            String typ;
+
 
             barcode = scanResult.getContents();
-            typ = scanResult.getFormatName();
 
             Log.i("scan", "Barcode " + barcode);
 
@@ -187,7 +181,7 @@ public class ProizvodiActivity extends AppCompatActivity {
         }
     }
 
-
+/*
     public void dohvatiPodatke(){
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Proizvodi");
@@ -217,7 +211,7 @@ public class ProizvodiActivity extends AppCompatActivity {
             }
         });
     }
-
+*/
     public void prikaziPodatke(){
         ListAdapter proizvodiAdapter = new CustomAdapterProizvod(getApplicationContext(), staticListaProizvoda);
 

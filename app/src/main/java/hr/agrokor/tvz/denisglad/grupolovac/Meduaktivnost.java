@@ -1,6 +1,5 @@
 package hr.agrokor.tvz.denisglad.grupolovac;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +15,7 @@ public class Meduaktivnost extends AppCompatActivity {
     public void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         // ako je prijavljen, odi na trgovine
-        // inace se vrati na pocetak
+        // inace se vrati na prijavu/registraciju
         if(ParseUser.getCurrentUser() != null) {
             startActivity(new Intent(this, TrgovineActivity.class));
         }else {

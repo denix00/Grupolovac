@@ -9,8 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 
 /**
  * Created by Denis on 28.10.2015..

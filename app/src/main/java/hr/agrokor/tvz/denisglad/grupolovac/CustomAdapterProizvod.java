@@ -36,17 +36,6 @@ public class CustomAdapterProizvod extends ArrayAdapter{
 
         txtNaziv.setText(redak[0]);
 
-        /*
-
-
-//        Log.i("redak", redak[position]);
-        CheckBox checkProizvod = (CheckBox) customView.findViewById(R.id.checkProizvod);
-        TextView txtNaziv = (TextView) customView.findViewById(R.id.txtNazivProizvoda);
-
-        checkProizvod.setChecked(true);
-        txtNaziv.setText((String)getItem(position));
-
-*/
         return customView;
     }
 }
