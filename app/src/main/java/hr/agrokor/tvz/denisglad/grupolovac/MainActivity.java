@@ -13,6 +13,25 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+/*********************************************************************************
+ *                          MOLIM PROCITATI
+ * *****************************************************************************
+ *
+ * MainActivity nije klasa koja se pokrece s aplikacijom, nego je to Meduaktivnost.
+ *
+ *
+ * Aplikaciji treba dodati spremanje podataka na online bazu, odbrojavanje izmedu trenutka
+ * kada je dobiven kod i kada je iskoristen. Ako nije iskoristen u tom vremenu (30 min), tada
+ * korisnik mora ponovno skenirat kodove proizvoda u toj trgovini - zastita protiv zloupotrebe
+ * (uz ostale nabrojane stvari u prezentaciji).
+ *
+ *
+ * Parse.com je nerelacijska baza podataka (nazalost, ustanovljeno prekasno), pa je potrebno
+ * napraviti punokrvnu web aplikaciju (iza koje je relacijska baza, npr. MySQL) s API-jem na
+ * koji ce se spojiti aplikacija pa da moze i citati iz baze, i pisati u nju kako spada. 
+ *
+ */
+
 
 public class MainActivity extends AppCompatActivity {
 
