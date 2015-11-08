@@ -136,7 +136,7 @@ public class IntentIntegrator {
 
     public static final String DEFAULT_TITLE = "Instalirati Barcode Scanner?";
     public static final String DEFAULT_MESSAGE =
-            "Aplikacija zahtjeva Barcode Scanner aplikaciju. Želite li ju instalirati?";
+            "Za funkcionalnost skeniranja kodova aplikacija zahtjeva Barcode Scanner aplikaciju. Želite li ju instalirati?";
     public static final String DEFAULT_YES = "Da";
     public static final String DEFAULT_NO = "Ne";
 
